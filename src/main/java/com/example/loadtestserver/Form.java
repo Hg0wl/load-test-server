@@ -9,4 +9,10 @@ public class Form {
   /*
   and all the other hidden form fields
    */
+  Form () { }
+
+  Form (String[] fields) {
+
+  }
 }
+

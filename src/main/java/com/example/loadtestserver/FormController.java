@@ -1,12 +1,14 @@
 package com.example.loadtestserver;
 
+import static org.springframework.http.MediaType.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,12 +22,15 @@ public class FormController {
     return "Landing Page";
   }
 
-  @PostMapping("/user")
-  public ResponseEntity submitForm(@RequestBody Form form) {
-    if (formService.submitForm(form)) {
-      return new ResponseEntity(HttpStatus.ACCEPTED);
+  @PostMapping(path = "/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<?> submitForm(@RequestParam String form) {
+    //Form newForm = new Form(form.split(","));
+    Form newForm = new Form();
+
+    if (formService.submitForm(newForm)) {
+      return new ResponseEntity<>(HttpStatus.ACCEPTED);
     } else {
-      return new ResponseEntity(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
 }
